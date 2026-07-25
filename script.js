@@ -145,22 +145,23 @@ function weightedPick(drivers, property){
 
 }
 
-function generateResults(field){
-
+function generateResults(field,track){
     let remaining=[...field];
-
     let results=[];
-
     while(remaining.length){
-
-        const picked=weightedPick(remaining,"Weight");
-
+        let weightedDrivers = remaining.map(driver=>({
+            ...driver,
+            AdjustedWeight:getAdjustedWeight(driver,track)
+        }));
+        const picked=weightedPick(
+            weightedDrivers,
+            "AdjustedWeight"
+        );
         results.unshift(picked);
-
-        remaining=remaining.filter(d=>d!==picked);
-
+        remaining=remaining.filter(
+            d=>d.Driver!==picked.Driver
+        );
     }
-
     return results;
 }
 
@@ -210,7 +211,8 @@ function runRace(){
     console.log("Chartered:", chartered.length);
     console.log("Unchartered:", unchartered.length);
     console.log("Final field:", field.length);
-    const results=generateResults(field);
+    const selectedTrack=document.getElementById("track").value;
+    const results=generateResults(field,selectedTrack);
 
     addLog("Generating finishing order...");
     addLog("");
@@ -225,6 +227,8 @@ function runRace(){
 
     document.getElementById("fieldSize").textContent =
     `Field Size: ${field.length}`;
+    addLog(`Track: ${selectedTrack}`);
+    addLog(`Type: ${tracks[selectedTrack].type}`);
     document.getElementById("openEntries").textContent =
     `Open Entries: ${openDrivers.length}`;
     
