@@ -33,8 +33,11 @@ const openEntryOdds = {
 };
 
 function selectOpenEntries(series){
-    let options=openEntryOdds[series];
-    let count=weightedPick(options,"weight").number;
+    let key = Object.keys(openEntryOdds).find(
+        s => s.toLowerCase() === series.toLowerCase()
+    );
+    let options = openEntryOdds[key];
+    let count = weightedPick(options,"weight").number;
     return count;
 }
 
