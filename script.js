@@ -53,8 +53,11 @@ function getFinishType(){
 }
 
 function selectOpenEntries(series){
+    let cleanSeries = series
+        .toLowerCase()
+        .replace(/[’']/g,"");
     let key = Object.keys(openEntryOdds).find(
-        s => s.toLowerCase() === series.toLowerCase()
+        s => s.toLowerCase().replace(/[’']/g,"") === cleanSeries
     );
     let options = openEntryOdds[key];
     let count = weightedPick(options,"weight").number;
