@@ -83,12 +83,25 @@ function generateResults(field){
 // STEP 5
 function runRace(){
 
-    const field=[...cupDrivers];
+    let field=[];
 
-    const results=generateResults(field);
+        const selectedSeries=document.getElementById("series").value;
 
-    ...
-}
+        switch(selectedSeries){
+
+            case "cup":
+                field=[...cupDrivers];
+                break;
+
+            case "oreilly":
+                field=[...oreillyDrivers];
+                break;
+
+            case "truck":
+                field=[...truckDrivers];
+                break;
+
+        }
 
     const results=generateResults(field);
 
