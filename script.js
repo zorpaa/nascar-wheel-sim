@@ -135,35 +135,32 @@ function runRace(){
     const selectedSeries=document.getElementById("series").value;
 
     console.log("Selected series:", selectedSeries);
-    
+
     let allDrivers = drivers.filter(driver =>
-    driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
-    driver.Active
+        driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
+        driver.Active
+    );
+
+    let chartered = allDrivers.filter(driver => driver.Chartered);
+
+    let unchartered = allDrivers.filter(driver => !driver.Chartered);
+
+    let openCount = selectOpenEntries(selectedSeries);
+
+    let openDrivers = getOpenDrivers(unchartered,openCount);
 
     document.getElementById("openList").textContent =
-    openDrivers.length
-    ? "Open Cars: " + openDrivers.map(d=>d.Driver).join(", ")
-    : "Open Cars: None";
-                                    
-);
+        openDrivers.length
+        ? "Open Cars: " + openDrivers.map(d=>d.Driver).join(", ")
+        : "Open Cars: None";
 
+    let field = [
+        ...chartered,
+        ...openDrivers
+    ];
 
-let chartered = allDrivers.filter(driver => driver.Chartered);
-
-let unchartered = allDrivers.filter(driver => !driver.Chartered);
-
-
-let openCount = selectOpenEntries(selectedSeries);
-
-
-let openDrivers = getOpenDrivers(unchartered,openCount);
-
-
-let field = [
-    ...chartered,
-    ...openDrivers
-];
     console.log(field);
+
     const results=generateResults(field);
 
     document.getElementById("fieldSize").textContent =
