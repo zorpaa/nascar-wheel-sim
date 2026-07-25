@@ -6,7 +6,7 @@ fetch("data/drivers.csv")
 .then(response => response.text())
 .then(data => {
     drivers = parseCSV(data);
-    console.log(drivers);
+    console.log("Loaded drivers:", drivers);
 });
 
 
