@@ -85,7 +85,7 @@ function runRace(){
     console.log("Selected series:", selectedSeries);
     
     let field = drivers.filter(driver =>
-        driver.Series === selectedSeries &&
+        driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
         driver.Active
     );
     console.log(field);
