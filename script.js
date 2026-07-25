@@ -39,8 +39,12 @@ const openEntryOdds = {
     ]
 };
 
-function getFinishType(){
+function addLog(message){
+    const log=document.getElementById("raceLog");
+    log.textContent += message + "\n";
+}
 
+function getFinishType(){
     return weightedPick(
         finishTypes,
         "weight"
@@ -147,11 +151,9 @@ function generateResults(field){
 }
 
 function runRace(){
-
+    document.getElementById("raceLog").textContent="";
     const selectedSeries=document.getElementById("series").value;
-
     console.log("Selected series:", selectedSeries);
-
     let allDrivers = drivers.filter(driver =>
         driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
         driver.Active
@@ -165,6 +167,14 @@ function runRace(){
 
     let openDrivers = getOpenDrivers(unchartered,openCount);
 
+    addLog(`Series: ${selectedSeries}`);
+    addLog("");
+    addLog(`Open Entries Selected: ${openDrivers.length}`);
+    openDrivers.forEach(driver=>{
+        addLog("✓ " + driver.Driver);
+    });
+    addLog("");
+    
     document.getElementById("openList").textContent =
         openDrivers.length
         ? "Open Cars: " + openDrivers.map(d=>d.Driver).join(", ")
@@ -178,6 +188,17 @@ function runRace(){
     console.log(field);
 
     const results=generateResults(field);
+
+    addLog("Generating finishing order...");
+    addLog("");
+
+    results.forEach((driver,index)=>{
+
+        addLog(
+            `${index+1}. ${driver.Driver}`
+        );
+
+    });
 
     document.getElementById("fieldSize").textContent =
     `Field Size: ${field.length}`;
