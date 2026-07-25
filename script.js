@@ -1,5 +1,12 @@
 document.getElementById("runRace").addEventListener("click", runRace);
 
+const finishTypes = [
+    {type:"Normal Finish",weight:80},
+    {type:"Side-by-Side Finish",weight:12},
+    {type:"Photo Finish",weight:5},
+    {type:"Last Lap Pass",weight:3}
+];
+
 const openEntryOdds = {
     Cup: [
         {number:0, weight:20},
@@ -31,6 +38,15 @@ const openEntryOdds = {
         {number:6, weight:1}
     ]
 };
+
+function getFinishType(){
+
+    return weightedPick(
+        finishTypes,
+        "weight"
+    ).type;
+
+}
 
 function selectOpenEntries(series){
     let key = Object.keys(openEntryOdds).find(
@@ -196,4 +212,6 @@ results.forEach((driver,index)=>{
 
     document.getElementById("winnerTeam").textContent=results[0].Team;
 
+    document.getElementById("finishType").textContent =
+    getFinishType();
 }
