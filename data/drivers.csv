@@ -1,5 +1,6 @@
 Series,Driver,Team,Chartered,Weight,Entry Weight,Active
 Cup,Kyle Larson,Hendrick Motorsports,Yes,0.5,,Yes
 Cup,William Byron,Hendrick Motorsports,Yes,0.8,,Yes
-Cup,BJ McLeod,Live Fast Motorsports,No,4,5,Yes
-Truck,Example Driver,Example Team,Yes,2,,
+Cup,BJ McLeod,Live Fast,No,4,10,Yes
+Cup,Parker Retzlaff,Project 91,No,2.5,5,Yes
+Cup,Austin Green,Example Racing,No,4.5,2,Yes
