@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASCAR Simulator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="data/cup.js"></script>
+    <script src="data/oreilly.js"></script>
+    <script src="data/truck.js"></script>
+    <script src="data/finishTypes.js"></script>
+
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>NASCAR Simulator</h1>
+
+    <div class="controls">
+
+        <label>Series</label>
+
+        <select id="series">
+            <option value="cup">Cup</option>
+            <option value="oreilly">O'Reilly</option>
+            <option value="truck">Truck</option>
+        </select>
+
+        <button id="runRace">Run Race</button>
+
+    </div>
+
+    <div id="winnerCard" class="winner hidden">
+
+        <h2>🏆 Winner</h2>
+
+        <h1 id="winnerName">---</h1>
+
+        <h3 id="winnerTeam"></h3>
+
+        <p id="finishType"></p>
+
+    </div>
+
+    <div class="results">
+
+        <h2>Results</h2>
+
+        <ol id="resultsList"></ol>
+
+    </div>
+
+    <div class="log">
+
+        <h2>Race Log</h2>
+
+        <pre id="raceLog"></pre>
+
+    </div>
+
+</div>
+
+</body>
+</html>
