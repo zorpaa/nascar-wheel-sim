@@ -108,6 +108,7 @@ function parseCSV(data){
         driver["Entry Weight"]=Number(driver["Entry Weight"]) || 0;
         driver.Chartered=driver.Chartered.trim().toLowerCase()==="yes";
         driver.Active=driver.Active.trim().toLowerCase()==="yes";
+        driver.Specialty = driver.Specialty || "";
         return driver;
 
     });
