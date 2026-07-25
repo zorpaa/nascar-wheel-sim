@@ -82,6 +82,8 @@ function runRace(){
 
     const selectedSeries=document.getElementById("series").value;
 
+    console.log("Selected series:", selectedSeries);
+    
     let field = drivers.filter(driver =>
         driver.Series === selectedSeries &&
         driver.Active
