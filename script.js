@@ -1,10 +1,5 @@
 document.getElementById("runRace").addEventListener("click", runRace);
 
-if(results.length===0){
-    alert("No drivers found for this series!");
-    return;
-}
-
 let drivers = [];
 
 fetch("data/drivers.csv")
