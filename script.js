@@ -1,5 +1,10 @@
 document.getElementById("runRace").addEventListener("click", runRace);
 
+if(results.length===0){
+    alert("No drivers found for this series!");
+    return;
+}
+
 let drivers = [];
 
 fetch("data/drivers.csv")
@@ -59,7 +64,6 @@ function weightedPick(drivers, property){
 
 }
 
-// STEP 4
 function generateResults(field){
 
     let remaining=[...field];
@@ -68,7 +72,7 @@ function generateResults(field){
 
     while(remaining.length){
 
-        const picked = weightedPick(remaining,"weight");
+        const picked=weightedPick(remaining,"Weight");
 
         results.unshift(picked);
 
@@ -77,7 +81,6 @@ function generateResults(field){
     }
 
     return results;
-
 }
 
 function runRace(){
@@ -88,7 +91,7 @@ function runRace(){
         driver.Series === selectedSeries &&
         driver.Active
     );
-
+    console.log(field);
     const results=generateResults(field);
 
     const list=document.getElementById("resultsList");
