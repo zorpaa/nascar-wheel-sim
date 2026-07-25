@@ -105,9 +105,8 @@ function parseCSV(data){
 
         driver.Weight=Number(driver.Weight);
         driver["Entry Weight"]=Number(driver["Entry Weight"]) || 0;
-        driver.Chartered=driver.Chartered==="Yes";
-        driver.Active=driver.Active==="Yes";
-
+        driver.Chartered=driver.Chartered.trim().toLowerCase()==="yes";
+        driver.Active=driver.Active.trim().toLowerCase()==="yes";
         return driver;
 
     });
@@ -189,7 +188,9 @@ function runRace(){
     ];
 
     console.log(field);
-
+    console.log("Chartered:", chartered.length);
+    console.log("Unchartered:", unchartered.length);
+    console.log("Final field:", field.length);
     const results=generateResults(field);
 
     addLog("Generating finishing order...");
