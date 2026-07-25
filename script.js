@@ -29,7 +29,7 @@ function generateResults(field){
 
     while(remaining.length){
 
-        const picked=weightedPick(remaining,"speed");
+        const picked = weightedPick(remaining,"weight");
 
         results.unshift(picked);
 
