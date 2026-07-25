@@ -75,6 +75,16 @@ function getOpenDrivers(drivers,count){
     return selected;
 }
 
+function getAdjustedWeight(driver,track){
+    let weight = driver.Weight;
+    if(!driver.Specialty)
+        return weight;
+    if(driver.Specialty === tracks[track].type){
+        weight *= 0.85;
+    }
+    return weight;
+}
+
 let drivers = [];
 
 fetch("data/drivers.csv")
