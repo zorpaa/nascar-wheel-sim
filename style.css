@@ -69,4 +69,26 @@ th,td{
 
 th{
     font-weight:bold;
+
+.winner{
+    animation: popIn .5s ease;
+}
+
+.trophy{
+    font-size:60px;
+}
+
+@keyframes popIn{
+
+    from{
+        transform:scale(.5);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
 }
