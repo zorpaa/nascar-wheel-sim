@@ -157,6 +157,9 @@ let field = [
     console.log(field);
     const results=generateResults(field);
 
+    console.log("Open entries:",openDrivers);
+    console.log("Field size:",field.length);
+    
     const list=document.getElementById("resultsList");
 
     list.innerHTML="";
