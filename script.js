@@ -139,6 +139,12 @@ function runRace(){
     let allDrivers = drivers.filter(driver =>
     driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
     driver.Active
+
+    document.getElementById("openList").textContent =
+    openDrivers.length
+    ? "Open Cars: " + openDrivers.map(d=>d.Driver).join(", ")
+    : "Open Cars: None";
+                                    
 );
 
 
@@ -160,22 +166,32 @@ let field = [
     console.log(field);
     const results=generateResults(field);
 
+    document.getElementById("fieldSize").textContent =
+    `Field Size: ${field.length}`;
+    document.getElementById("openEntries").textContent =
+    `Open Entries: ${openDrivers.length}`;
+    
     console.log("Open entries:",openDrivers);
     console.log("Field size:",field.length);
     
-    const list=document.getElementById("resultsList");
+    const table=document.getElementById("resultsTable");
 
-    list.innerHTML="";
+table.innerHTML="";
 
-    results.forEach(driver=>{
 
-        const li=document.createElement("li");
+results.forEach((driver,index)=>{
 
-        li.textContent=`${driver.Driver} (${driver.Team})`;
+    let row=document.createElement("tr");
 
-        list.appendChild(li);
+    row.innerHTML=`
+        <td>${index+1}</td>
+        <td>${driver.Driver}</td>
+        <td>${driver.Team}</td>
+    `;
 
-    });
+    table.appendChild(row);
+
+});
 
     document.getElementById("winnerCard").classList.remove("hidden");
 
