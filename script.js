@@ -1,5 +1,54 @@
 document.getElementById("runRace").addEventListener("click", runRace);
 
+const openEntryOdds = {
+    Cup: [
+        {number:0, weight:20},
+        {number:1, weight:35},
+        {number:2, weight:25},
+        {number:3, weight:12},
+        {number:4, weight:6},
+        {number:5, weight:2},
+        {number:6, weight:1}
+    ],
+
+    "O'Reilly": [
+        {number:0, weight:15},
+        {number:1, weight:30},
+        {number:2, weight:30},
+        {number:3, weight:15},
+        {number:4, weight:7},
+        {number:5, weight:2},
+        {number:6, weight:1}
+    ],
+
+    Truck: [
+        {number:0, weight:10},
+        {number:1, weight:25},
+        {number:2, weight:35},
+        {number:3, weight:20},
+        {number:4, weight:7},
+        {number:5, weight:2},
+        {number:6, weight:1}
+    ]
+};
+
+function selectOpenEntries(series){
+    let options=openEntryOdds[series];
+    let count=weightedPick(options,"weight").number;
+    return count;
+}
+
+function getOpenDrivers(drivers,count){
+    let available=[...drivers];
+    let selected=[];
+    while(selected.length<count && available.length){
+        let driver=weightedPick(available,"Entry Weight");
+        selected.push(driver);
+        available=available.filter(d=>d!==driver);
+    }
+    return selected;
+}
+
 let drivers = [];
 
 fetch("data/drivers.csv")
@@ -84,10 +133,27 @@ function runRace(){
 
     console.log("Selected series:", selectedSeries);
     
-    let field = drivers.filter(driver =>
-        driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
-        driver.Active
-    );
+    let allDrivers = drivers.filter(driver =>
+    driver.Series.trim().toLowerCase() === selectedSeries.trim().toLowerCase() &&
+    driver.Active
+);
+
+
+let chartered = allDrivers.filter(driver => driver.Chartered);
+
+let unchartered = allDrivers.filter(driver => !driver.Chartered);
+
+
+let openCount = selectOpenEntries(selectedSeries);
+
+
+let openDrivers = getOpenDrivers(unchartered,openCount);
+
+
+let field = [
+    ...chartered,
+    ...openDrivers
+];
     console.log(field);
     const results=generateResults(field);
 
