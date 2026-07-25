@@ -80,28 +80,14 @@ function generateResults(field){
 
 }
 
-// STEP 5
 function runRace(){
 
-    let field=[];
+    const selectedSeries=document.getElementById("series").value;
 
-        const selectedSeries=document.getElementById("series").value;
-
-        switch(selectedSeries){
-
-            case "cup":
-                field=[...cupDrivers];
-                break;
-
-            case "oreilly":
-                field=[...oreillyDrivers];
-                break;
-
-            case "truck":
-                field=[...truckDrivers];
-                break;
-
-        }
+    let field = drivers.filter(driver =>
+        driver.Series === selectedSeries &&
+        driver.Active
+    );
 
     const results=generateResults(field);
 
@@ -113,7 +99,7 @@ function runRace(){
 
         const li=document.createElement("li");
 
-        li.textContent=`${driver.name} (${driver.team})`;
+        li.textContent=`${driver.Driver} (${driver.Team})`;
 
         list.appendChild(li);
 
@@ -121,8 +107,8 @@ function runRace(){
 
     document.getElementById("winnerCard").classList.remove("hidden");
 
-    document.getElementById("winnerName").textContent=results[0].name;
+    document.getElementById("winnerName").textContent=results[0].Driver;
 
-    document.getElementById("winnerTeam").textContent=results[0].team;
+    document.getElementById("winnerTeam").textContent=results[0].Team;
 
 }
