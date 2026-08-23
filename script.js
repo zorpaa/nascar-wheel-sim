@@ -215,8 +215,6 @@ if(!race){
 }
 
 const selectedTrack=race.track;
-
-    const selectedTrack=race.track;
     console.log("Selected series:", selectedSeries);
     let allDrivers = drivers.filter(driver =>
     driver.Series
