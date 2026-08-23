@@ -381,6 +381,7 @@ updateTrackFromRace();
     document.getElementById("winnerCard").classList.remove("hidden");
     document.getElementById("winnerName").textContent=results[0].Driver;
     document.getElementById("winnerTeam").textContent=results[0].Team;
+    document.getElementById("winnerNumber").textContent=results[0].Number;
     document.getElementById("finishType").textContent=finishType;
     getFinishType();
 }
