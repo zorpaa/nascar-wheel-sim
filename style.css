@@ -302,6 +302,13 @@ tr:first-child td{
     font-weight:bold;
 }
 
+td:nth-child(2),
+th:nth-child(2){
+    width:70px;
+    text-align:center;
+    font-weight:bold;
+}
+
 /* Log */
 
 pre{
