@@ -192,8 +192,6 @@ document.getElementById("series").addEventListener("change",()=>{
     updateTrackFromRace();
 });
 
-document.getElementById("race").addEventListener("change",updateTrackFromRace);
-
 updateRaceList();
 updateTrackFromRace();
 updateRaceList();
