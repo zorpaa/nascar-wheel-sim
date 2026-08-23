@@ -1,10 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;500;600;700;800;900&display=swap');
+
 *{
     box-sizing:border-box;
 }
 
 body{
     margin:0;
-    font-family:Arial,Helvetica,sans-serif;
+    font-family:'Roboto Condensed',Arial,sans-serif;
     background:#101114;
     color:#eee;
 }
@@ -73,6 +75,7 @@ select{
     border:1px solid #3a3d44;
     background:#101114;
     color:#eee;
+    font-family:inherit;
     font-size:14px;
     outline:none;
 }
@@ -87,6 +90,7 @@ button{
     background:#d71920;
     color:white;
     cursor:pointer;
+    font-family:inherit;
     font-size:14px;
     font-weight:bold;
     text-transform:uppercase;
@@ -188,6 +192,8 @@ button:hover{
     text-transform:uppercase;
     letter-spacing:2px;
 }
+
+/* Winner Race Information */
 
 .winnerRaceInfo{
     display:flex;
@@ -347,13 +353,23 @@ pre{
         font-size:30px;
     }
 
-    .winnerRaceInfo{
-    flex-direction:column;
-    gap:15px;
-}
+    .winnerDriver{
+        gap:10px;
+    }
 
-.raceInfoItem{
-    border-right:0;
-    padding:0;
-}
+    .winnerNumber{
+        width:45px;
+        height:45px;
+        font-size:25px;
+    }
+
+    .winnerRaceInfo{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .raceInfoItem{
+        border-right:0;
+        padding:0;
+    }
 }
