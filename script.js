@@ -168,9 +168,45 @@ function generateResults(field,track){
     return results;
 }
 
+function updateRaceList(){
+
+    const selectedSeries=document.getElementById("series").value;
+    const raceSelect=document.getElementById("race");
+
+    raceSelect.innerHTML="";
+
+    const races=schedule[selectedSeries];
+
+    if(!races)
+        return;
+
+    races.forEach(race=>{
+
+        const option=document.createElement("option");
+
+        option.value=race.race;
+        option.textContent=`${race.race}. ${race.name}`;
+
+        raceSelect.appendChild(option);
+
+    });
+
+}
+
+document.getElementById("series").addEventListener("change",updateRaceList);
+updateRaceList();
+
 function runRace(){
     document.getElementById("raceLog").textContent="";
     const selectedSeries=document.getElementById("series").value;
+    const raceNumber=Number(
+        document.getElementById("race").value
+    );
+
+    const race=schedule[selectedSeries]
+        .find(r=>r.race===raceNumber);
+
+    const selectedTrack=race.track;
     console.log("Selected series:", selectedSeries);
     let allDrivers = drivers.filter(driver =>
     driver.Series
@@ -257,12 +293,11 @@ results.forEach((driver,index)=>{
 
 });
 
+    document.getElementById("raceName").textContent=race.name;
+    document.getElementById("trackName").textContent=selectedTrack;
     document.getElementById("winnerCard").classList.remove("hidden");
-
     document.getElementById("winnerName").textContent=results[0].Driver;
-
     document.getElementById("winnerTeam").textContent=results[0].Team;
-
     document.getElementById("finishType").textContent =
     getFinishType();
 }
