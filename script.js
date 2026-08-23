@@ -375,12 +375,12 @@ updateTrackFromRace();
 
     document.getElementById("trackType").textContent=
     tracks[selectedTrack].type;
-    
+
     document.getElementById("raceName").textContent=race.name;
     document.getElementById("trackName").textContent=tracks[selectedTrack].name;
     document.getElementById("winnerCard").classList.remove("hidden");
     document.getElementById("winnerName").textContent=results[0].Driver;
     document.getElementById("winnerTeam").textContent=results[0].Team;
-    document.getElementById("finishType").textContent =
+    document.getElementById("finishType").textContent=finishType;
     getFinishType();
 }
