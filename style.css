@@ -189,6 +189,41 @@ button:hover{
     letter-spacing:2px;
 }
 
+.winnerRaceInfo{
+    display:flex;
+    justify-content:center;
+    margin-top:25px;
+    padding-top:20px;
+    border-top:1px solid #292c32;
+}
+
+.raceInfoItem{
+    min-width:180px;
+    padding:0 25px;
+    border-right:1px solid #292c32;
+}
+
+.raceInfoItem:last-child{
+    border-right:0;
+}
+
+.raceInfoItem span{
+    display:block;
+    color:#666;
+    font-size:10px;
+    font-weight:bold;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    margin-bottom:6px;
+}
+
+.raceInfoItem strong{
+    display:block;
+    color:#eee;
+    font-size:15px;
+    font-weight:bold;
+}
+
 .trophy{
     font-size:50px;
     margin-bottom:5px;
@@ -311,4 +346,14 @@ pre{
     .winnerName{
         font-size:30px;
     }
+
+    .winnerRaceInfo{
+    flex-direction:column;
+    gap:15px;
+}
+
+.raceInfoItem{
+    border-right:0;
+    padding:0;
+}
 }
