@@ -203,8 +203,26 @@ function runRace(){
         document.getElementById("race").value
     );
 
-    const race=schedule[selectedSeries]
-        .find(r=>r.race===raceNumber);
+    const scheduleKey=Object.keys(schedule).find(
+    s=>s.toLowerCase().replace(/[’']/g,"") ===
+       selectedSeries.toLowerCase().replace(/[’']/g,"")
+);
+
+if(!scheduleKey){
+    console.error("No schedule found for:",selectedSeries);
+    return;
+}
+
+const race=schedule[scheduleKey].find(
+    r=>r.race===raceNumber
+);
+
+if(!race){
+    console.error("No race found:",raceNumber,selectedSeries);
+    return;
+}
+
+const selectedTrack=race.track;
 
     const selectedTrack=race.track;
     console.log("Selected series:", selectedSeries);
