@@ -63,6 +63,10 @@ function populateTrackList(){
 
 }
 
+function selectFinishType(){
+    return weightedPick(finishTypes,"weight").name;
+}
+
 function updateTrackFromRace(){
 
     const selectedSeries=document.getElementById("series").value;
@@ -313,6 +317,7 @@ const selectedTrack=race.track;
     console.log("Unchartered:", unchartered.length);
     console.log("Final field:", field.length);
     const results=generateResults(field,selectedTrack);
+    const finishType=selectFinishType();
 
     addLog("Generating finishing order...");
     addLog("");
