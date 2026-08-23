@@ -357,6 +357,7 @@ results.forEach((driver,index)=>{
 
     row.innerHTML=`
         <td>${index+1}</td>
+        <td>${driver.Number}</td>
         <td>${driver.Driver}</td>
         <td>${driver.Team}</td>
     `;
