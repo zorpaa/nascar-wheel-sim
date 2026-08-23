@@ -125,6 +125,10 @@ const tracks = {
         name:"Road America",
         type:"Road Course"
     },
+    Montreal:{
+        name:"Montreal",
+        type:"Road Course"
+    },
     CanadianTire:{
         name:"Canadian Tire Motorsport Park",
         type:"Road Course"
