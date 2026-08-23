@@ -169,30 +169,22 @@ function generateResults(field,track){
 }
 
 function updateRaceList(){
-
     const selectedSeries=document.getElementById("series").value;
     const raceSelect=document.getElementById("race");
-
     raceSelect.innerHTML="";
-
-    const races=schedule[selectedSeries];
-
-    if(!races)
+    const scheduleKey=Object.keys(schedule).find(
+        s=>s.toLowerCase().replace(/[’']/g,"") ===
+           selectedSeries.toLowerCase().replace(/[’']/g,"")
+    );
+    if(!scheduleKey)
         return;
-
-    races.forEach(race=>{
-
+    schedule[scheduleKey].forEach(race=>{
         const option=document.createElement("option");
-
         option.value=race.race;
         option.textContent=`${race.race}. ${race.name}`;
-
         raceSelect.appendChild(option);
-
     });
-
 }
-
 document.getElementById("series").addEventListener("change",updateRaceList);
 updateRaceList();
 
