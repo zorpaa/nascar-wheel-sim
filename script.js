@@ -76,11 +76,14 @@ function getOpenDrivers(drivers,count){
 }
 
 function getAdjustedWeight(driver,track){
-    let weight = driver.Weight;
+    let weight=driver.Weight;
     if(!driver.Specialty)
         return weight;
-    if(driver.Specialty === tracks[track].type){
-        weight *= 0.85;
+    let specialties=driver.Specialty
+        .split(",")
+        .map(s=>s.trim());
+    if(specialties.includes(tracks[track].type)){
+        weight*=0.85;
     }
     return weight;
 }
