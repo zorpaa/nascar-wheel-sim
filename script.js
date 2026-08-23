@@ -63,8 +63,21 @@ function populateTrackList(){
 
 }
 
+function inverseWeightedPick(items,property){
+    const totalWeight=items.reduce(
+        (sum,item)=>sum+(1/item[property]),0
+    );
+    let random=Math.random()*totalWeight;
+    for(const item of items){
+        random-=1/item[property];
+        if(random<=0)
+            return item;
+    }
+    return items[items.length-1];
+}
+
 function selectFinishType(){
-    return weightedPick(finishTypes,"weight").name;
+    return inverseWeightedPick(finishTypes,"weight").name;
 }
 
 function updateTrackFromRace(){
