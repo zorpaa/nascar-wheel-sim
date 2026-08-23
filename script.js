@@ -44,6 +44,25 @@ function addLog(message){
     log.textContent += message + "\n";
 }
 
+function populateTrackList(){
+
+    const trackSelect=document.getElementById("track");
+
+    trackSelect.innerHTML="";
+
+    Object.keys(tracks).forEach(track=>{
+
+        const option=document.createElement("option");
+
+        option.value=track;
+        option.textContent=track;
+
+        trackSelect.appendChild(option);
+
+    });
+
+}
+
 function updateTrackFromRace(){
 
     const selectedSeries=document.getElementById("series").value;
@@ -218,6 +237,7 @@ document.getElementById("series").addEventListener("change",()=>{
     updateTrackFromRace();
 });
 
+populateTrackList();
 updateRaceList();
 updateTrackFromRace();
 updateRaceList();
