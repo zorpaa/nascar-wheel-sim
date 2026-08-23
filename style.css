@@ -131,7 +131,7 @@ button:hover{
     text-align:center;
     padding:35px 20px;
     margin-top:15px;
-    border-top:4px solid #d71920;
+    border-top:10px solid #d71920;
     animation:popIn .35s ease;
 }
 
