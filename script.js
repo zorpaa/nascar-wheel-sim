@@ -44,6 +44,32 @@ function addLog(message){
     log.textContent += message + "\n";
 }
 
+function updateTrackFromRace(){
+
+    const selectedSeries=document.getElementById("series").value;
+    const raceSelect=document.getElementById("race");
+    const trackSelect=document.getElementById("track");
+
+    const scheduleKey=Object.keys(schedule).find(
+        s=>s.toLowerCase().replace(/[’']/g,"") ===
+           selectedSeries.toLowerCase().replace(/[’']/g,"")
+    );
+
+    if(!scheduleKey)
+        return;
+
+    const raceNumber=Number(raceSelect.value);
+
+    const race=schedule[scheduleKey].find(
+        r=>r.race===raceNumber
+    );
+
+    if(!race)
+        return;
+
+    trackSelect.value=race.track;
+}
+
 function getFinishType(){
     return weightedPick(
         finishTypes,
@@ -315,32 +341,6 @@ document.getElementById("series").addEventListener("change",()=>{
 document.getElementById("race").addEventListener("change",updateTrackFromRace);
 updateRaceList();
 updateTrackFromRace();
-    
-function updateTrackFromRace(){
-
-    const selectedSeries=document.getElementById("series").value;
-    const raceSelect=document.getElementById("race");
-    const trackSelect=document.getElementById("track");
-
-    const scheduleKey=Object.keys(schedule).find(
-        s=>s.toLowerCase().replace(/[’']/g,"") ===
-           selectedSeries.toLowerCase().replace(/[’']/g,"")
-    );
-
-    if(!scheduleKey)
-        return;
-
-    const raceNumber=Number(raceSelect.value);
-
-    const race=schedule[scheduleKey].find(
-        r=>r.race===raceNumber
-    );
-
-    if(!race)
-        return;
-
-    trackSelect.value=race.track;
-}
 
     document.getElementById("raceName").textContent=race.name;
     document.getElementById("trackName").textContent=selectedTrack;
