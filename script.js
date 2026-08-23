@@ -55,7 +55,7 @@ function populateTrackList(){
         const option=document.createElement("option");
 
         option.value=track;
-        option.textContent=track;
+        option.textContent=tracks[track].name;
 
         trackSelect.appendChild(option);
 
@@ -362,8 +362,11 @@ document.getElementById("race").addEventListener("change",updateTrackFromRace);
 updateRaceList();
 updateTrackFromRace();
 
+    document.getElementById("trackType").textContent=
+    tracks[selectedTrack].type;
+    
     document.getElementById("raceName").textContent=race.name;
-    document.getElementById("trackName").textContent=selectedTrack;
+    document.getElementById("trackName").textContent=tracks[selectedTrack].name;
     document.getElementById("winnerCard").classList.remove("hidden");
     document.getElementById("winnerName").textContent=results[0].Driver;
     document.getElementById("winnerTeam").textContent=results[0].Team;
