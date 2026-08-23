@@ -77,7 +77,7 @@ function inverseWeightedPick(items,property){
 }
 
 function selectFinishType(){
-    return inverseWeightedPick(finishTypes,"weight").name;
+    return weightedPick(finishTypes,"weight").name;
 }
 
 function updateTrackFromRace(){
