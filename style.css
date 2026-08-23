@@ -291,8 +291,8 @@ pre{
     display:flex;
     justify-content:center;
     align-items:center;
-    gap:15px;
-    margin:10px 0;
+    gap:16px;
+    margin:12px 0;
 }
 
 .winnerDriver h1{
@@ -300,9 +300,15 @@ pre{
 }
 
 .winnerNumber{
-    font-size:42px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:58px;
+    height:58px;
+    background:#d71920;
+    color:white;
+    font-size:32px;
     font-weight:900;
-    color:#d71920;
     line-height:1;
 }
 }
