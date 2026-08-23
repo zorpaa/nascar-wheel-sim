@@ -150,6 +150,31 @@ button:hover{
     text-transform:uppercase;
 }
 
+.winnerDriver{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:16px;
+    margin:12px 0;
+}
+
+.winnerDriver h1{
+    margin:0;
+}
+
+.winnerNumber{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:58px;
+    height:58px;
+    background:#d71920;
+    color:white;
+    font-size:32px;
+    font-weight:900;
+    line-height:1;
+}
+
 .winnerTeam{
     color:#888;
     font-size:15px;
@@ -286,29 +311,4 @@ pre{
     .winnerName{
         font-size:30px;
     }
-
-    .winnerDriver{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:16px;
-    margin:12px 0;
-}
-
-.winnerDriver h1{
-    margin:0;
-}
-
-.winnerNumber{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:58px;
-    height:58px;
-    background:#d71920;
-    color:white;
-    font-size:32px;
-    font-weight:900;
-    line-height:1;
-}
 }
