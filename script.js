@@ -310,6 +310,14 @@ results.forEach((driver,index)=>{
 
 });
 
+document.getElementById("series").addEventListener("change",()=>{
+    updateRaceList();
+    updateTrackFromRace();
+});
+document.getElementById("race").addEventListener("change",updateTrackFromRace);
+updateRaceList();
+updateTrackFromRace();
+    
 function updateTrackFromRace(){
 
     const selectedSeries=document.getElementById("series").value;
