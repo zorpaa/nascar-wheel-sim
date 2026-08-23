@@ -250,7 +250,6 @@ function runRace(){
     console.log("Chartered:", chartered.length);
     console.log("Unchartered:", unchartered.length);
     console.log("Final field:", field.length);
-    const selectedTrack=document.getElementById("track").value;
     const results=generateResults(field,selectedTrack);
 
     addLog("Generating finishing order...");
