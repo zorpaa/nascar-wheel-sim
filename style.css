@@ -286,4 +286,17 @@ pre{
     .winnerName{
         font-size:30px;
     }
+
+    .winnerDriver{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:15px;
+}
+
+.winnerNumber{
+    font-size:42px;
+    font-weight:900;
+    color:#d71920;
+}
 }
