@@ -170,34 +170,28 @@ fetch("data/drivers.csv")
 
 
 function parseCSV(data){
-
     const rows=data.trim().split("\n");
-
     const headers=rows[0].split(",");
 
     return rows.slice(1).map(row=>{
-
         const values=row.split(",");
-
         let driver={};
 
         headers.forEach((header,index)=>{
-
-            driver[header.trim()] = values[index]?.trim();
-
+            driver[header.trim()]=values[index]?.trim();
         });
 
-        driver.Series = driver.Series.trim();
+        driver.Series=driver.Series.trim();
+        driver.Number=driver.Number?.trim()||"";
         driver.Weight=Number(driver.Weight);
-        driver["Entry Weight"]=Number(driver["Entry Weight"]) || 0;
-        driver["Selection Weight"]=Number(driver["Selection Weight"]) || 0;
+        driver["Entry Weight"]=Number(driver["Entry Weight"])||0;
+        driver["Selection Weight"]=Number(driver["Selection Weight"])||0;
         driver.Chartered=driver.Chartered==="Yes";
         driver.Active=driver.Active==="Yes";
-        driver.Specialty = driver.Specialty || "";
+        driver.Specialty=driver.Specialty||"";
+
         return driver;
-
     });
-
 }
 
 // STEP 2
