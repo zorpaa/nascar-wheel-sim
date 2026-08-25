@@ -234,7 +234,23 @@ function selectDriverForCar(carDrivers){
         return carDrivers[Math.floor(Math.random()*carDrivers.length)];
     }
 
-    return weightedPick(available,"Selection Weight");
+    const totalWeight=available.reduce(
+        (sum,driver)=>sum+(1/driver["Selection Weight"]),0
+    );
+
+    let random=Math.random()*totalWeight;
+
+    for(const driver of available){
+
+        random-=1/driver["Selection Weight"];
+
+        if(random<=0){
+            return driver;
+        }
+
+    }
+
+    return available[available.length-1];
 }
 
 function groupCars(drivers){
