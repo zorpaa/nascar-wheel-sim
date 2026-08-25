@@ -119,14 +119,28 @@ function selectOpenEntries(series){
     return count;
 }
 
-function getOpenDrivers(drivers,count){
-    let available=[...drivers];
+function getOpenCars(cars,count){
+
+    let available=Object.entries(cars);
     let selected=[];
+
     while(selected.length<count && available.length){
-        let driver=weightedPick(available,"Entry Weight");
-        selected.push(driver);
-        available=available.filter(d=>d!==driver);
+
+        const options=available.map(([carID,carDrivers])=>({
+            carID,
+            drivers:carDrivers,
+            weight:carDrivers[0]["Entry Weight"]
+        }));
+
+        const selectedCar=weightedPick(options,"weight");
+
+        selected.push(selectedCar);
+
+        available=available.filter(
+            ([carID])=>carID!==selectedCar.carID
+        );
     }
+
     return selected;
 }
 
@@ -176,8 +190,9 @@ function parseCSV(data){
         driver.Series = driver.Series.trim();
         driver.Weight=Number(driver.Weight);
         driver["Entry Weight"]=Number(driver["Entry Weight"]) || 0;
-        driver.Chartered=driver.Chartered.trim().toLowerCase()==="yes";
-        driver.Active=driver.Active.trim().toLowerCase()==="yes";
+        driver["Selection Weight"]=Number(driver["Selection Weight"]) || 0;
+        driver.Chartered=driver.Chartered==="Yes";
+        driver.Active=driver.Active==="Yes";
         driver.Specialty = driver.Specialty || "";
         return driver;
 
@@ -203,6 +218,42 @@ function weightedPick(drivers, property){
 
     return drivers[drivers.length-1];
 
+}
+
+function selectDriverForCar(carDrivers){
+
+    if(carDrivers.length===1){
+        return carDrivers[0];
+    }
+
+    const available=carDrivers.filter(
+        driver=>driver["Selection Weight"]>0
+    );
+
+    if(!available.length){
+        return carDrivers[Math.floor(Math.random()*carDrivers.length)];
+    }
+
+    return weightedPick(available,"Selection Weight");
+}
+
+function groupCars(drivers){
+
+    const cars={};
+
+    drivers.forEach(driver=>{
+
+        const carID=driver["Car ID"] || `${driver.Driver}-${driver.Number}`;
+
+        if(!cars[carID]){
+            cars[carID]=[];
+        }
+
+        cars[carID].push(driver);
+
+    });
+
+    return cars;
 }
 
 function generateResults(field,track){
@@ -292,14 +343,35 @@ const selectedTrack=race.track;
     driver.Active
 );
 
-    let chartered = allDrivers.filter(driver => driver.Chartered);
+    const cars=groupCars(allDrivers);
 
-    let unchartered = allDrivers.filter(driver => !driver.Chartered);
+const charteredCars={};
+const uncharteredCars={};
 
-    let openCount = selectOpenEntries(selectedSeries);
+Object.entries(cars).forEach(([carID,carDrivers])=>{
 
-    let openDrivers = getOpenDrivers(unchartered,openCount);
+    if(carDrivers[0].Chartered){
+        charteredCars[carID]=carDrivers;
+    }else{
+        uncharteredCars[carID]=carDrivers;
+    }
 
+});
+
+let openCount=selectOpenEntries(selectedSeries);
+
+let openCars=getOpenCars(uncharteredCars,openCount);
+
+let openDrivers=openCars.map(car=>
+    selectDriverForCar(car.drivers)
+);
+    
+let chartered=[];
+
+Object.values(charteredCars).forEach(carDrivers=>{
+    chartered.push(selectDriverForCar(carDrivers));
+});
+    
     addLog(`Series: ${selectedSeries}`);
     addLog("");
     addLog(`Open Entries Selected: ${openDrivers.length}`);
