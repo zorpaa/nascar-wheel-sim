@@ -54,7 +54,7 @@ O'Reilly,Lavar Scott,Alpha Prime,45,Yes,45,,1.5,,,Yes
 O'Reilly,Austin Green,Big Machine,48,Yes,48,,3,,,Yes
 O'Reilly,Preston Pardus,DGM Racing,92,Yes,92,,3.5,,,Yes
 O'Reilly,Sage Karam,DGM Racing,91,Yes,91,,3,,,Yes
-O'Reilly,Sheldon Creed,HAAS Factory,0,Yes,0,,0.7,,,Yes
+O'Reilly,Sheldon Creed,HAAS Factory,00,Yes,00,,0.7,,,Yes
 O'Reilly,Sam Mayer,HAAS Factory,41,Yes,41,,0.5,,,Yes
 O'Reilly,Raphael Lessard,Hendrick,17,Yes,17,,0.9,,,Yes
 O'Reilly,Jeremy Clements,Jeremy Clements Racing,51,Yes,51,,1.8,,,Yes
@@ -69,6 +69,7 @@ O'Reilly,Luke Fenhaus,Jordan Anderson,32,Yes,32,,2.3,,,Yes
 O'Reilly,Rajah Caruth,JR Motorsports,88,Yes,88,,0.7,,,Yes
 O'Reilly,Carson Kvapil,JR Motorsports,1,Yes,1,,0.8,,,Yes
 O'Reilly,Sammy Smith,JR Motorsports,8,Yes,8,,0.5,,,Yes
+O'Reilly,Kaz Grala,JR Motorsports,7,No,7,,1.1,0.2,Road Course,Yes
 O'Reilly,Josh Williams,Kaulig,31,Yes,31,,1.7,,,Yes
 O'Reilly,Noah Gragson,Kaulig,16,No,16,,1,0.5,,Yes
 O'Reilly,Denny Hamlin,Kaulig,10,No,10,,0.5,0.5,,Yes
@@ -83,11 +84,11 @@ O'Reilly,Alex Labbe,RSS Racing,38,Yes,38,,2,,,Yes
 O'Reilly,Ryan Sieg,RSS Racing,39,Yes,39,,1.1,,,Yes
 O'Reilly,Harrison Burton,Sam Hunt,24,Yes,24,,0.9,,,Yes
 O'Reilly,Dean Thompson,Sam Hunt,26,Yes,26,,0.9,,,Yes
-O'Reilly,Josh Bilicki,SS GreenLight,7,Yes,7,,1.9,,,Yes
+O'Reilly,Josh Bilicki,SS GreenLight,07,Yes,07,,1.9,,,Yes
 O'Reilly,Garrett Smithley,SS GreenLight,0,Yes,0,,1.6,,,Yes
 O'Reilly,Anthony Alfredo,Viking,96,Yes,96,,1.1,,,Yes
 O'Reilly,Parker Retzlaff,Viking,99,Yes,99,,0.9,,,Yes
-O'Reilly,Ryan Ellis,Young's Motorsports,2,Yes,2,,2,,,Yes
+O'Reilly,Ryan Ellis,Young's Motorsports,02,Yes,02,,2,,,Yes
 O'Reilly,Nathan Byrd,Young's Motorsports,42,Yes,42,,2,,,Yes
 Truck,Josh Berry,CR7,97,No,97,,0.6,0.1,,Yes
 Truck,Grant Enfinger,CR7,9,Yes,9,,0.7,,,Yes
