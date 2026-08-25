@@ -321,95 +321,93 @@ updateRaceList();
 
 function runRace(){
     document.getElementById("raceLog").textContent="";
+
     const selectedSeries=document.getElementById("series").value;
-    const raceNumber=Number(
-        document.getElementById("race").value
-    );
+    const raceNumber=Number(document.getElementById("race").value);
 
     const scheduleKey=Object.keys(schedule).find(
-    s=>s.toLowerCase().replace(/[’']/g,"") ===
-       selectedSeries.toLowerCase().replace(/[’']/g,"")
-);
+        s=>s.toLowerCase().replace(/[’']/g,"")===
+        selectedSeries.toLowerCase().replace(/[’']/g,"")
+    );
 
-if(!scheduleKey){
-    console.error("No schedule found for:",selectedSeries);
-    return;
-}
-
-const race=schedule[scheduleKey].find(
-    r=>r.race===raceNumber
-);
-
-if(!race){
-    console.error("No race found:",raceNumber,selectedSeries);
-    return;
-}
-
-const selectedTrack=race.track;
-    console.log("Selected series:", selectedSeries);
-    let allDrivers = drivers.filter(driver =>
-    driver.Series
-        .trim()
-        .toLowerCase()
-        .replace(/[’']/g,"") === 
-    selectedSeries
-        .trim()
-        .toLowerCase()
-        .replace(/[’']/g,"") &&
-    driver.Active
-);
-
-    const cars=groupCars(allDrivers);
-
-const charteredCars={};
-const uncharteredCars={};
-
-Object.entries(cars).forEach(([carID,carDrivers])=>{
-
-    if(carDrivers[0].Chartered){
-        charteredCars[carID]=carDrivers;
-    }else{
-        uncharteredCars[carID]=carDrivers;
+    if(!scheduleKey){
+        console.error("No schedule found for:",selectedSeries);
+        return;
     }
 
-});
+    const race=schedule[scheduleKey].find(r=>r.race===raceNumber);
 
-let openCount=selectOpenEntries(selectedSeries);
+    if(!race){
+        console.error("No race found:",raceNumber,selectedSeries);
+        return;
+    }
 
-let openCars=getOpenCars(uncharteredCars,openCount);
+    const selectedTrack=race.track;
 
-let openDrivers=openCars.map(car=>
-    selectDriverForCar(car.drivers)
-);
-    
-let chartered=[];
+    console.log("Selected series:",selectedSeries);
 
-Object.values(charteredCars).forEach(carDrivers=>{
-    chartered.push(selectDriverForCar(carDrivers));
-});
-    
+    let allDrivers=drivers.filter(driver=>
+        driver.Series.trim().toLowerCase().replace(/[’']/g,"")===
+        selectedSeries.trim().toLowerCase().replace(/[’']/g,"")&&
+        driver.Active
+    );
+
+    // Group drivers into cars
+    const cars=groupCars(allDrivers);
+
+    const charteredCars={};
+    const uncharteredCars={};
+
+    Object.entries(cars).forEach(([carID,carDrivers])=>{
+        if(carDrivers[0].Chartered){
+            charteredCars[carID]=carDrivers;
+        }else{
+            uncharteredCars[carID]=carDrivers;
+        }
+    });
+
+    // Select chartered drivers
+    let chartered=[];
+
+    Object.values(charteredCars).forEach(carDrivers=>{
+        chartered.push(selectDriverForCar(carDrivers));
+    });
+
+    // Select open cars
+    let openCount=selectOpenEntries(selectedSeries);
+    let openCars=getOpenCars(uncharteredCars,openCount);
+
+    // Select driver for each open car
+    let openDrivers=openCars.map(car=>
+        selectDriverForCar(car.drivers)
+    );
+
     addLog(`Series: ${selectedSeries}`);
     addLog("");
     addLog(`Open Entries Selected: ${openDrivers.length}`);
-    openDrivers.forEach(driver=>{
-        addLog("✓ " + driver.Driver);
-    });
-    addLog("");
-    
-    document.getElementById("openList").textContent =
-        openDrivers.length
-        ? "Open Cars: " + openDrivers.map(d=>d.Driver).join(", ")
-        : "Open Cars: None";
 
-    let field = [
+    openDrivers.forEach(driver=>{
+        addLog(`✓ #${driver.Number} ${driver.Driver}`);
+    });
+
+    addLog("");
+
+    document.getElementById("openList").textContent=
+        openDrivers.length
+        ?"Open Cars: "+openDrivers.map(d=>`#${d.Number} ${d.Driver}`).join(", ")
+        :"Open Cars: None";
+
+    // Final field
+    let field=[
         ...chartered,
         ...openDrivers
     ];
 
     console.log(field);
-    console.log("Chartered:", chartered.length);
-    console.log("Unchartered:", unchartered.length);
-    console.log("Final field:", field.length);
+    console.log("Chartered Cars:",Object.keys(charteredCars).length);
+    console.log("Unchartered Cars:",Object.keys(uncharteredCars).length);
+    console.log("Final Field:",field.length);
+
     const results=generateResults(field,selectedTrack);
     const finishType=selectFinishType();
 
@@ -417,60 +415,52 @@ Object.values(charteredCars).forEach(carDrivers=>{
     addLog("");
 
     results.forEach((driver,index)=>{
-
-        addLog(
-            `${index+1}. ${driver.Driver}`
-        );
-
+        addLog(`${index+1}. #${driver.Number} ${driver.Driver}`);
     });
 
-    document.getElementById("fieldSize").textContent =
-    `Field Size: ${field.length}`;
+    document.getElementById("fieldSize").textContent=
+        `Field Size: ${field.length}`;
+
     addLog(`Track: ${selectedTrack}`);
     addLog(`Type: ${tracks[selectedTrack].type}`);
-    document.getElementById("openEntries").textContent =
-    `Open Entries: ${openDrivers.length}`;
-    
+
+    document.getElementById("openEntries").textContent=
+        `Open Entries: ${openDrivers.length}`;
+
     console.log("Open entries:",openDrivers);
     console.log("Field size:",field.length);
-    
+
+    // Results table
     const table=document.getElementById("resultsTable");
+    table.innerHTML="";
 
-table.innerHTML="";
+    results.forEach((driver,index)=>{
+        let row=document.createElement("tr");
 
+        row.innerHTML=`
+            <td>${index+1}</td>
+            <td>${driver.Number}</td>
+            <td>${driver.Driver}</td>
+            <td>${driver.Team}</td>
+        `;
 
-results.forEach((driver,index)=>{
+        table.appendChild(row);
+    });
 
-    let row=document.createElement("tr");
-
-    row.innerHTML=`
-        <td>${index+1}</td>
-        <td>${driver.Number}</td>
-        <td>${driver.Driver}</td>
-        <td>${driver.Team}</td>
-    `;
-
-    table.appendChild(row);
-
-});
-
-document.getElementById("series").addEventListener("change",()=>{
+    // Update race information
     updateRaceList();
     updateTrackFromRace();
-});
-document.getElementById("race").addEventListener("change",updateTrackFromRace);
-updateRaceList();
-updateTrackFromRace();
 
     document.getElementById("trackType").textContent=
-    tracks[selectedTrack].type;
+        tracks[selectedTrack].type;
 
     document.getElementById("raceName").textContent=race.name;
-    document.getElementById("trackName").textContent=tracks[selectedTrack].name;
+    document.getElementById("trackName").textContent=selectedTrack;
+
+    // Winner card
     document.getElementById("winnerCard").classList.remove("hidden");
     document.getElementById("winnerName").textContent=results[0].Driver;
     document.getElementById("winnerTeam").textContent=results[0].Team;
     document.getElementById("winnerNumber").textContent=results[0].Number;
     document.getElementById("finishType").textContent=finishType;
-    getFinishType();
 }
