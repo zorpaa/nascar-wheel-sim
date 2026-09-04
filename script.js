@@ -398,14 +398,14 @@ function runRace(){
     let chartered=[];
     let selectedDrivers=new Set();
 
-    const driver=selectDriverForCar(carDrivers,selectedDrivers);
+    const selectedDriver=selectDriverForCar(carDrivers,selectedDrivers);
 
     if(driver){
         chartered.push(driver);
         selectedDrivers.add(driver.Driver.trim().toLowerCase());
     }
 
-     const driver=selectDriverForCar(car.drivers,selectedDrivers);
+    const selectedDriver=selectDriverForCar(car.drivers,selectedDrivers);
 
     if(driver){
         openDrivers.push(driver);
