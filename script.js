@@ -396,8 +396,22 @@ function runRace(){
 
     // Select chartered drivers
     let chartered=[];
-    let selectedDrivers=[];
+    let selectedDrivers=new Set();
 
+    const driver=selectDriverForCar(carDrivers,selectedDrivers);
+
+    if(driver){
+        chartered.push(driver);
+        selectedDrivers.add(driver.Driver.trim().toLowerCase());
+    }
+
+     const driver=selectDriverForCar(car.drivers,selectedDrivers);
+
+    if(driver){
+        openDrivers.push(driver);
+        selectedDrivers.add(driver.Driver.trim().toLowerCase());
+    }
+    
     Object.values(charteredCars).forEach(carDrivers=>{
         chartered.push(selectDriverForCar(carDrivers));
     });
@@ -434,6 +448,15 @@ function runRace(){
 
     trackStarts(selectedSeries,field);
 
+    const names=field.map(d=>d.Driver.trim().toLowerCase());
+    const duplicates=names.filter(
+        (name,index)=>names.indexOf(name)!==index
+    );
+    
+    if(duplicates.length){
+        console.error("⚠️ DUPLICATE DRIVER DETECTED:",[...new Set(duplicates)]);
+    }
+    
     console.log(field);
     console.log("Chartered Cars:",Object.keys(charteredCars).length);
     console.log("Unchartered Cars:",Object.keys(uncharteredCars).length);
