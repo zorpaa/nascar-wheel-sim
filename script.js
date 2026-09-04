@@ -1,5 +1,34 @@
 document.getElementById("runRace").addEventListener("click", runRace);
 
+const startTracker={
+    Cup:{},
+    "O'Reilly":{},
+    Truck:{}
+};
+
+function trackStarts(series,field){
+    if(!startTracker[series]){
+        startTracker[series]={};
+    }
+
+    field.forEach(driver=>{
+        startTracker[series][driver.Driver]=
+            (startTracker[series][driver.Driver]||0)+1;
+    });
+
+    console.log("=== START TRACKER ===");
+
+    Object.entries(startTracker).forEach(([series,drivers])=>{
+        console.log(`\n${series}`);
+
+        Object.entries(drivers)
+            .sort((a,b)=>b[1]-a[1])
+            .forEach(([driver,starts])=>{
+                console.log(`${driver}: ${starts}`);
+            });
+    });
+}
+
 const openEntryOdds = {
     Cup: [
         {number:0, weight:20},
@@ -448,6 +477,13 @@ function runRace(){
         table.appendChild(row);
     });
 
+    let field=[
+    ...chartered,
+    ...openDrivers
+];
+
+trackStarts(selectedSeries,field);
+    
     // Update race information
     updateRaceList();
     updateTrackFromRace();
