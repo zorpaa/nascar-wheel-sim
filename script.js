@@ -1,4 +1,4 @@
-document.getElementById("runRace").addEventListener("click", runRace);
+document.getElementById("runRace").addEventListener("click",runRace);
 
 const startTracker={
     Cup:{},
@@ -7,13 +7,21 @@ const startTracker={
 };
 
 function trackStarts(series,field){
-    if(!startTracker[series]){
+    if(!startTracker[series])
         startTracker[series]={};
-    }
 
     field.forEach(driver=>{
-        startTracker[series][driver.Driver]=
-            (startTracker[series][driver.Driver]||0)+1;
+        const name=driver.Driver.trim().toLowerCase();
+        const displayName=driver.Driver.trim();
+
+        if(!startTracker[series][name]){
+            startTracker[series][name]={
+                name:displayName,
+                starts:0
+            };
+        }
+
+        startTracker[series][name].starts++;
     });
 
     console.log("=== START TRACKER ===");
@@ -21,96 +29,120 @@ function trackStarts(series,field){
     Object.entries(startTracker).forEach(([series,drivers])=>{
         console.log(`\n${series}`);
 
-        Object.entries(drivers)
-            .sort((a,b)=>b[1]-a[1])
-            .forEach(([driver,starts])=>{
-                console.log(`${driver}: ${starts}`);
+        Object.values(drivers)
+            .sort((a,b)=>b.starts-a.starts)
+            .forEach(driver=>{
+                console.log(`${driver.name}: ${driver.starts}`);
             });
     });
 }
 
-const openEntryOdds = {
-    Cup: [
-        {number:0, weight:20},
-        {number:1, weight:35},
-        {number:2, weight:25},
-        {number:3, weight:12},
-        {number:4, weight:6},
-        {number:5, weight:2},
-        {number:6, weight:1}
+const openEntryOdds={
+    Cup:[
+        {number:0,weight:20},
+        {number:1,weight:35},
+        {number:2,weight:25},
+        {number:3,weight:12},
+        {number:4,weight:6},
+        {number:5,weight:2},
+        {number:6,weight:1}
     ],
 
-    "O'Reilly": [
-        {number:0, weight:15},
-        {number:1, weight:30},
-        {number:2, weight:30},
-        {number:3, weight:15},
-        {number:4, weight:7},
-        {number:5, weight:2},
-        {number:6, weight:1}
+    "O'Reilly":[
+        {number:0,weight:15},
+        {number:1,weight:30},
+        {number:2,weight:30},
+        {number:3,weight:15},
+        {number:4,weight:7},
+        {number:5,weight:2},
+        {number:6,weight:1}
     ],
 
-    Truck: [
-        {number:0, weight:10},
-        {number:1, weight:25},
-        {number:2, weight:35},
-        {number:3, weight:20},
-        {number:4, weight:7},
-        {number:5, weight:2},
-        {number:6, weight:1}
+    Truck:[
+        {number:0,weight:10},
+        {number:1,weight:25},
+        {number:2,weight:35},
+        {number:3,weight:20},
+        {number:4,weight:7},
+        {number:5,weight:2},
+        {number:6,weight:1}
     ]
 };
 
 function addLog(message){
-    const log=document.getElementById("raceLog");
-    log.textContent += message + "\n";
+    document.getElementById("raceLog").textContent+=message+"\n";
 }
 
 function populateTrackList(){
-
     const trackSelect=document.getElementById("track");
-
     trackSelect.innerHTML="";
 
     Object.keys(tracks).forEach(track=>{
-
         const option=document.createElement("option");
-
         option.value=track;
         option.textContent=tracks[track].name;
-
         trackSelect.appendChild(option);
-
     });
-
 }
 
-function inverseWeightedPick(items,property){
+function weightedPick(items,property){
+    if(!items.length)
+        return null;
+
     const totalWeight=items.reduce(
-        (sum,item)=>sum+(1/item[property]),0
+        (sum,item)=>sum+item[property],0
     );
+
+    if(totalWeight<=0)
+        return items[Math.floor(Math.random()*items.length)];
+
     let random=Math.random()*totalWeight;
+
     for(const item of items){
-        random-=1/item[property];
+        random-=item[property];
+
         if(random<=0)
             return item;
     }
+
     return items[items.length-1];
 }
 
+function inverseWeightedPick(items,property){
+    const valid=items.filter(item=>item[property]>0);
+
+    if(!valid.length)
+        return items[Math.floor(Math.random()*items.length)];
+
+    const totalWeight=valid.reduce(
+        (sum,item)=>sum+(1/item[property]),0
+    );
+
+    let random=Math.random()*totalWeight;
+
+    for(const item of valid){
+        random-=1/item[property];
+
+        if(random<=0)
+            return item;
+    }
+
+    return valid[valid.length-1];
+}
+
 function selectFinishType(){
-    return weightedPick(finishTypes,"weight").name;
+    const selected=weightedPick(finishTypes,"weight");
+    return selected?.type||selected?.name||"";
 }
 
 function updateTrackFromRace(){
-
     const selectedSeries=document.getElementById("series").value;
     const raceSelect=document.getElementById("race");
     const trackSelect=document.getElementById("track");
 
     const scheduleKey=Object.keys(schedule).find(
-        s=>s.toLowerCase().replace(/[’']/g,"") ===
-           selectedSeries.toLowerCase().replace(/[’']/g,"")
+        s=>s.toLowerCase().replace(/[’']/g,"")===
+        selectedSeries.toLowerCase().replace(/[’']/g,"")
     );
 
     if(!scheduleKey)
@@ -128,33 +160,28 @@ function updateTrackFromRace(){
     trackSelect.value=race.track;
 }
 
-function getFinishType(){
-    return weightedPick(
-        finishTypes,
-        "weight"
-    ).type;
-
-}
-
 function selectOpenEntries(series){
-    let cleanSeries = series
+    const cleanSeries=series
         .toLowerCase()
         .replace(/[’']/g,"");
-    let key = Object.keys(openEntryOdds).find(
-        s => s.toLowerCase().replace(/[’']/g,"") === cleanSeries
+
+    const key=Object.keys(openEntryOdds).find(
+        s=>s.toLowerCase().replace(/[’']/g,"")===cleanSeries
     );
-    let options = openEntryOdds[key];
-    let count = weightedPick(options,"weight").number;
-    return count;
+
+    if(!key)
+        return 0;
+
+    const selected=weightedPick(openEntryOdds[key],"weight");
+
+    return selected?.number||0;
 }
 
 function getOpenCars(cars,count){
-
     let available=Object.entries(cars);
-    let selected=[];
+    const selected=[];
 
-    while(selected.length<count && available.length){
-
+    while(selected.length<count&&available.length){
         const options=available.map(([carID,carDrivers])=>({
             carID,
             drivers:carDrivers,
@@ -162,6 +189,9 @@ function getOpenCars(cars,count){
         }));
 
         const selectedCar=weightedPick(options,"weight");
+
+        if(!selectedCar)
+            break;
 
         selected.push(selectedCar);
 
@@ -175,28 +205,28 @@ function getOpenCars(cars,count){
 
 function getAdjustedWeight(driver,track){
     let weight=driver.Weight;
-    if(!tracks[track])
+
+    if(!tracks[track]||!driver.Specialty)
         return weight;
-    if(!driver.Specialty)
-        return weight;
-    let specialties=driver.Specialty
+
+    const specialties=driver.Specialty
         .split(",")
         .map(s=>s.trim());
-    if(specialties.includes(tracks[track].type)){
+
+    if(specialties.includes(tracks[track].type))
         weight*=0.85;
-    }
+
     return weight;
 }
 
-let drivers = [];
+let drivers=[];
 
 fetch("data/drivers.csv")
-.then(response => response.text())
-.then(data => {
-    drivers = parseCSV(data);
-    console.log("Loaded drivers:", drivers);
+.then(response=>response.text())
+.then(data=>{
+    drivers=parseCSV(data);
+    console.log("Loaded drivers:",drivers);
 });
-
 
 function parseCSV(data){
     const rows=data.trim().split("\n");
@@ -204,15 +234,15 @@ function parseCSV(data){
 
     return rows.slice(1).map(row=>{
         const values=row.split(",");
-        let driver={};
+        const driver={};
 
         headers.forEach((header,index)=>{
             driver[header.trim()]=values[index]?.trim();
         });
 
-        driver.Series=driver.Series.trim();
+        driver.Series=driver.Series?.trim()||"";
         driver.Number=driver.Number?.trim()||"";
-        driver.Weight=Number(driver.Weight);
+        driver.Weight=Number(driver.Weight)||0;
         driver["Entry Weight"]=Number(driver["Entry Weight"])||0;
         driver["Selection Weight"]=Number(driver["Selection Weight"])||0;
         driver.Chartered=driver.Chartered==="Yes";
@@ -223,78 +253,45 @@ function parseCSV(data){
     });
 }
 
-// STEP 2
-function weightedPick(drivers, property){
-
-    const totalWeight = drivers.reduce((sum,d)=>sum+d[property],0);
-
-    let random = Math.random()*totalWeight;
-
-    for(const driver of drivers){
-
-        random -= driver[property];
-
-        if(random<=0)
-            return driver;
-
-    }
-
-    return drivers[drivers.length-1];
-
-}
-
 function selectDriverForCar(carDrivers,selectedDrivers){
-    const available=carDrivers.filter(driver=>
-        !selectedDrivers.has(driver.Driver.trim().toLowerCase())
-    );
+    const available=carDrivers.filter(driver=>{
+        const name=driver.Driver.trim().toLowerCase();
+        return !selectedDrivers.has(name);
+    });
 
-    if(!available.length){
+    if(!available.length)
         return null;
-    }
 
-    if(available.length===1){
+    if(available.length===1)
         return available[0];
-    }
 
     const weighted=available.filter(
         driver=>driver["Selection Weight"]>0
     );
 
-    if(!weighted.length){
+    if(!weighted.length)
         return available[Math.floor(Math.random()*available.length)];
-    }
 
-    const totalWeight=weighted.reduce(
-        (sum,driver)=>sum+(1/driver["Selection Weight"]),0
+    const selected=inverseWeightedPick(
+        weighted,
+        "Selection Weight"
     );
 
-    let random=Math.random()*totalWeight;
-
-    for(const driver of weighted){
-        random-=1/driver["Selection Weight"];
-
-        if(random<=0){
-            return driver;
-        }
-    }
-
-    return weighted[weighted.length-1];
+    return selected;
 }
 
 function groupCars(drivers){
-
     const cars={};
 
     drivers.forEach(driver=>{
+        const carID=
+            driver["Car ID"]||
+            `${driver.Driver}-${driver.Number}`;
 
-        const carID=driver["Car ID"] || `${driver.Driver}-${driver.Number}`;
-
-        if(!cars[carID]){
+        if(!cars[carID])
             cars[carID]=[];
-        }
 
         cars[carID].push(driver);
-
     });
 
     return cars;
@@ -302,56 +299,79 @@ function groupCars(drivers){
 
 function generateResults(field,track){
     let remaining=[...field];
-    let results=[];
+    const results=[];
+
     while(remaining.length){
-        let weightedDrivers = remaining.map(driver=>({
+        const weightedDrivers=remaining.map(driver=>({
             ...driver,
             AdjustedWeight:getAdjustedWeight(driver,track)
         }));
+
         const picked=weightedPick(
             weightedDrivers,
             "AdjustedWeight"
         );
+
+        if(!picked)
+            break;
+
         results.unshift(picked);
+
+        const pickedName=picked.Driver.trim().toLowerCase();
+
         remaining=remaining.filter(
-            d=>d.Driver!==picked.Driver
+            driver=>driver.Driver.trim().toLowerCase()!==pickedName
         );
     }
+
     return results;
 }
 
 function updateRaceList(){
     const selectedSeries=document.getElementById("series").value;
     const raceSelect=document.getElementById("race");
+
     raceSelect.innerHTML="";
+
     const scheduleKey=Object.keys(schedule).find(
-        s=>s.toLowerCase().replace(/[’']/g,"") ===
-           selectedSeries.toLowerCase().replace(/[’']/g,"")
+        s=>s.toLowerCase().replace(/[’']/g,"")===
+        selectedSeries.toLowerCase().replace(/[’']/g,"")
     );
+
     if(!scheduleKey)
         return;
+
     schedule[scheduleKey].forEach(race=>{
         const option=document.createElement("option");
+
         option.value=race.race;
         option.textContent=`${race.race}. ${race.name}`;
+
         raceSelect.appendChild(option);
     });
 }
+
 document.getElementById("series").addEventListener("change",()=>{
     updateRaceList();
     updateTrackFromRace();
 });
 
+document.getElementById("race").addEventListener(
+    "change",
+    updateTrackFromRace
+);
+
 populateTrackList();
 updateRaceList();
 updateTrackFromRace();
-updateRaceList();
 
 function runRace(){
     document.getElementById("raceLog").textContent="";
 
     const selectedSeries=document.getElementById("series").value;
-    const raceNumber=Number(document.getElementById("race").value);
+    const raceNumber=Number(
+        document.getElementById("race").value
+    );
 
     const scheduleKey=Object.keys(schedule).find(
         s=>s.toLowerCase().replace(/[’']/g,"")===
@@ -363,10 +383,16 @@ function runRace(){
         return;
     }
 
-    const race=schedule[scheduleKey].find(r=>r.race===raceNumber);
+    const race=schedule[scheduleKey].find(
+        r=>r.race===raceNumber
+    );
 
     if(!race){
-        console.error("No race found:",raceNumber,selectedSeries);
+        console.error(
+            "No race found:",
+            raceNumber,
+            selectedSeries
+        );
         return;
     }
 
@@ -374,13 +400,12 @@ function runRace(){
 
     console.log("Selected series:",selectedSeries);
 
-    let allDrivers=drivers.filter(driver=>
+    const allDrivers=drivers.filter(driver=>
         driver.Series.trim().toLowerCase().replace(/[’']/g,"")===
         selectedSeries.trim().toLowerCase().replace(/[’']/g,"")&&
         driver.Active
     );
 
-    // Group drivers into cars
     const cars=groupCars(allDrivers);
 
     const charteredCars={};
@@ -394,89 +419,133 @@ function runRace(){
         }
     });
 
-    // Select chartered drivers
-    let chartered=[];
-    let selectedDrivers=new Set();
+    // Track drivers already assigned this race
+    const selectedDrivers=new Set();
 
-    const selectedDriver=selectDriverForCar(carDrivers,selectedDrivers);
+    // Select one driver for every chartered car
+    const chartered=[];
 
-    if(driver){
-        chartered.push(driver);
-        selectedDrivers.add(driver.Driver.trim().toLowerCase());
-    }
-
-    const selectedDriver=selectDriverForCar(car.drivers,selectedDrivers);
-
-    if(driver){
-        openDrivers.push(driver);
-        selectedDrivers.add(driver.Driver.trim().toLowerCase());
-    }
-    
     Object.values(charteredCars).forEach(carDrivers=>{
-        chartered.push(selectDriverForCar(carDrivers));
+        const selectedDriver=
+            selectDriverForCar(
+                carDrivers,
+                selectedDrivers
+            );
+
+        if(selectedDriver){
+            chartered.push(selectedDriver);
+
+            selectedDrivers.add(
+                selectedDriver.Driver.trim().toLowerCase()
+            );
+        }
     });
 
-    // Select open cars
-    let openCount=selectOpenEntries(selectedSeries);
-    let openCars=getOpenCars(uncharteredCars,openCount);
+    // Select unchartered cars
+    const openCount=selectOpenEntries(selectedSeries);
 
-    // Select driver for each open car
-    let openDrivers=openCars.map(car=>
-        selectDriverForCar(car.drivers)
+    const openCars=getOpenCars(
+        uncharteredCars,
+        openCount
     );
+
+    // Select one driver for every selected open car
+    const openDrivers=[];
+
+    openCars.forEach(car=>{
+        const selectedDriver=
+            selectDriverForCar(
+                car.drivers,
+                selectedDrivers
+            );
+
+        if(selectedDriver){
+            openDrivers.push(selectedDriver);
+
+            selectedDrivers.add(
+                selectedDriver.Driver.trim().toLowerCase()
+            );
+        }
+    });
 
     addLog(`Series: ${selectedSeries}`);
     addLog("");
     addLog(`Open Entries Selected: ${openDrivers.length}`);
 
     openDrivers.forEach(driver=>{
-        addLog(`✓ #${driver.Number} ${driver.Driver}`);
+        addLog(
+            `✓ #${driver.Number} ${driver.Driver}`
+        );
     });
 
     addLog("");
 
     document.getElementById("openList").textContent=
         openDrivers.length
-        ?"Open Cars: "+openDrivers.map(d=>`#${d.Number} ${d.Driver}`).join(", ")
+        ?`Open Cars: ${openDrivers.map(
+            d=>`#${d.Number} ${d.Driver}`
+        ).join(", ")}`
         :"Open Cars: None";
 
     // Final field
-    let field=[
+    const field=[
         ...chartered,
         ...openDrivers
     ];
 
+    // Track starts
     trackStarts(selectedSeries,field);
 
-    const names=field.map(d=>d.Driver.trim().toLowerCase());
+    // Duplicate safety check
+    const names=field.map(
+        driver=>driver.Driver.trim().toLowerCase()
+    );
+
     const duplicates=names.filter(
         (name,index)=>names.indexOf(name)!==index
     );
-    
+
     if(duplicates.length){
-        console.error("⚠️ DUPLICATE DRIVER DETECTED:",[...new Set(duplicates)]);
+        console.error(
+            "⚠️ DUPLICATE DRIVER DETECTED:",
+            [...new Set(duplicates)]
+        );
+    }else{
+        console.log("✓ No duplicate drivers");
     }
-    
-    console.log(field);
+
     console.log("Chartered Cars:",Object.keys(charteredCars).length);
     console.log("Unchartered Cars:",Object.keys(uncharteredCars).length);
     console.log("Final Field:",field.length);
+    console.log("Final Field:",field);
 
-    const results=generateResults(field,selectedTrack);
+    // Generate results
+    const results=generateResults(
+        field,
+        selectedTrack
+    );
+
     const finishType=selectFinishType();
 
     addLog("Generating finishing order...");
     addLog("");
 
     results.forEach((driver,index)=>{
-        addLog(`${index+1}. #${driver.Number} ${driver.Driver}`);
+        addLog(
+            `${index+1}. #${driver.Number} ${driver.Driver}`
+        );
     });
 
     document.getElementById("fieldSize").textContent=
         `Field Size: ${field.length}`;
 
     addLog(`Track: ${selectedTrack}`);
-    addLog(`Type: ${tracks[selectedTrack].type}`);
+
+    if(tracks[selectedTrack]){
+        addLog(
+            `Type: ${tracks[selectedTrack].type}`
+        );
+    }
 
     document.getElementById("openEntries").textContent=
         `Open Entries: ${openDrivers.length}`;
@@ -489,7 +558,7 @@ function runRace(){
     table.innerHTML="";
 
     results.forEach((driver,index)=>{
-        let row=document.createElement("tr");
+        const row=document.createElement("tr");
 
         row.innerHTML=`
             <td>${index+1}</td>
@@ -500,21 +569,37 @@ function runRace(){
 
         table.appendChild(row);
     });
-    
-    // Update race information
+
+    // Race information
     updateRaceList();
     updateTrackFromRace();
 
-    document.getElementById("trackType").textContent=
-        tracks[selectedTrack].type;
+    if(tracks[selectedTrack]){
+        document.getElementById("trackType").textContent=
+            tracks[selectedTrack].type;
+    }
 
-    document.getElementById("raceName").textContent=race.name;
-    document.getElementById("trackName").textContent=selectedTrack;
+    document.getElementById("raceName").textContent=
+        race.name;
+
+    document.getElementById("trackName").textContent=
+        selectedTrack;
 
     // Winner card
-    document.getElementById("winnerCard").classList.remove("hidden");
-    document.getElementById("winnerName").textContent=results[0].Driver;
-    document.getElementById("winnerTeam").textContent=results[0].Team;
-    document.getElementById("winnerNumber").textContent=results[0].Number;
-    document.getElementById("finishType").textContent=finishType;
+    if(results.length){
+        document.getElementById("winnerCard")
+            .classList.remove("hidden");
+
+        document.getElementById("winnerName")
+            .textContent=results[0].Driver;
+
+        document.getElementById("winnerTeam")
+            .textContent=results[0].Team;
+
+        document.getElementById("winnerNumber")
+            .textContent=results[0].Number;
+
+        document.getElementById("finishType")
+            .textContent=finishType;
+    }
 }
