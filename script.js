@@ -243,7 +243,7 @@ function weightedPick(drivers, property){
 
 }
 
-function selectDriverForCar(carDrivers,selectedDrivers=[]){
+function selectDriverForCar(carDrivers,selectedDrivers){
     const available=carDrivers.filter(driver=>
         !selectedDrivers.has(driver.Driver.trim().toLowerCase())
     );
