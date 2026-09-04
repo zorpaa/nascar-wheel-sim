@@ -244,9 +244,8 @@ function weightedPick(drivers, property){
 }
 
 function selectDriverForCar(carDrivers,selectedDrivers=[]){
-
     const available=carDrivers.filter(driver=>
-        !selectedDrivers.includes(driver.Driver)
+        !selectedDrivers.has(driver.Driver.trim().toLowerCase())
     );
 
     if(!available.length){
@@ -279,7 +278,7 @@ function selectDriverForCar(carDrivers,selectedDrivers=[]){
         }
     }
 
-    return available[available.length-1];
+    return weighted[weighted.length-1];
 }
 
 function groupCars(drivers){
