@@ -433,6 +433,8 @@ function runRace(){
         ...openDrivers
     ];
 
+    trackStarts(selectedSeries,field);
+
     console.log(field);
     console.log("Chartered Cars:",Object.keys(charteredCars).length);
     console.log("Unchartered Cars:",Object.keys(uncharteredCars).length);
@@ -476,13 +478,6 @@ function runRace(){
 
         table.appendChild(row);
     });
-
-    let field=[
-    ...chartered,
-    ...openDrivers
-];
-
-trackStarts(selectedSeries,field);
     
     // Update race information
     updateRaceList();
