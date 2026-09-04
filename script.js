@@ -214,34 +214,40 @@ function weightedPick(drivers, property){
 
 }
 
-function selectDriverForCar(carDrivers){
+function selectDriverForCar(carDrivers,selectedDrivers=[]){
 
-    if(carDrivers.length===1){
-        return carDrivers[0];
-    }
-
-    const available=carDrivers.filter(
-        driver=>driver["Selection Weight"]>0
+    const available=carDrivers.filter(driver=>
+        !selectedDrivers.includes(driver.Driver)
     );
 
     if(!available.length){
-        return carDrivers[Math.floor(Math.random()*carDrivers.length)];
+        return null;
     }
 
-    const totalWeight=available.reduce(
+    if(available.length===1){
+        return available[0];
+    }
+
+    const weighted=available.filter(
+        driver=>driver["Selection Weight"]>0
+    );
+
+    if(!weighted.length){
+        return available[Math.floor(Math.random()*available.length)];
+    }
+
+    const totalWeight=weighted.reduce(
         (sum,driver)=>sum+(1/driver["Selection Weight"]),0
     );
 
     let random=Math.random()*totalWeight;
 
-    for(const driver of available){
-
+    for(const driver of weighted){
         random-=1/driver["Selection Weight"];
 
         if(random<=0){
             return driver;
         }
-
     }
 
     return available[available.length-1];
@@ -362,6 +368,7 @@ function runRace(){
 
     // Select chartered drivers
     let chartered=[];
+    let selectedDrivers=[];
 
     Object.values(charteredCars).forEach(carDrivers=>{
         chartered.push(selectDriverForCar(carDrivers));
