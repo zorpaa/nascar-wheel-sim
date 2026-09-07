@@ -425,21 +425,31 @@ function runRace(){
     // Select one driver for every chartered car
     const chartered=[];
 
-    Object.values(charteredCars).forEach(carDrivers=>{
-        const selectedDriver=
-            selectDriverForCar(
-                carDrivers,
-                selectedDrivers
-            );
+addLog("Multi-Driver Car Selections:");
+addLog("");
 
-        if(selectedDriver){
-            chartered.push(selectedDriver);
+Object.entries(charteredCars).forEach(([carID,carDrivers])=>{
+    const selectedDriver=selectDriverForCar(
+        carDrivers,
+        selectedDrivers
+    );
 
-            selectedDrivers.add(
-                selectedDriver.Driver.trim().toLowerCase()
+    if(selectedDriver){
+        chartered.push(selectedDriver);
+
+        selectedDrivers.add(
+            selectedDriver.Driver.trim().toLowerCase()
+        );
+
+        if(carDrivers.length>1){
+            addLog(
+                `${carID}: #${selectedDriver.Number} ${selectedDriver.Driver}`
             );
         }
-    });
+    }
+});
+
+addLog("");
 
     // Select unchartered cars
     const openCount=selectOpenEntries(selectedSeries);
@@ -450,23 +460,28 @@ function runRace(){
     );
 
     // Select one driver for every selected open car
-    const openDrivers=[];
+const openDrivers=[];
 
-    openCars.forEach(car=>{
-        const selectedDriver=
-            selectDriverForCar(
-                car.drivers,
-                selectedDrivers
-            );
+openCars.forEach(car=>{
+    const selectedDriver=selectDriverForCar(
+        car.drivers,
+        selectedDrivers
+    );
 
-        if(selectedDriver){
-            openDrivers.push(selectedDriver);
+    if(selectedDriver){
+        openDrivers.push(selectedDriver);
 
-            selectedDrivers.add(
-                selectedDriver.Driver.trim().toLowerCase()
+        selectedDrivers.add(
+            selectedDriver.Driver.trim().toLowerCase()
+        );
+
+        if(car.drivers.length>1){
+            addLog(
+                `Multi-Driver Open Car ${car.carID}: #${selectedDriver.Number} ${selectedDriver.Driver}`
             );
         }
-    });
+    }
+});
 
     addLog(`Series: ${selectedSeries}`);
     addLog("");
