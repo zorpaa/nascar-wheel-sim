@@ -97,6 +97,10 @@ const tracks = {
         name:"Auto Club Speedway",
         type:"Short Track"
     },
+    LucasOil:{
+        name:"Indianapolis Race Park",
+        type:"Short track"
+    },
 
     // Road Courses
     Sonoma:{
